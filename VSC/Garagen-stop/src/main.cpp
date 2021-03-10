@@ -26,6 +26,7 @@ const uint16_t WAIT_TIME = 300;
 #define CS_PIN    10
 
 int Test = 1;
+int Korrektur = -2;
 
 byte triggerPin = 7;
 byte echoPin = 6;
@@ -48,13 +49,14 @@ void loop(void)
 double* distances = HCSR04.measureDistanceCm();
   
   entfernung = distances[0];
+  entfernung = entfernung + Korrektur;
   
   Serial.print(entfernung);
   Serial.println(" cm");
   
   delay(500);
 
-if (entfernung < 5 || entfernung > 199)
+if (entfernung < 2 || entfernung > 199)
 {
 P.print("---");
 }
