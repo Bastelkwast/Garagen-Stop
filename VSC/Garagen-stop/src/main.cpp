@@ -1,23 +1,17 @@
+// Garagenstop
+// Verwendet wird ein Arduino Pro Mini 5V/16MHz, ein Ultraschallsensor US-026, 2x Dotmatrix 8x8 mit MAX72xx Chip
+// Anschluss:
+// Der Ultraschallsensor: VCC an 5V, GND an GND, Trig an Pin 7 , Echo an Pin 6
+// Die Dot Matrix: VCC an 5V, GND an GND, DIN an Pin 11, CS an Pin 10, CLK an Pin 13
+
 #include <Arduino.h>
-
-// Program to demonstrate the MD_Parola library
-//
-// Uses the Arduino Print Class extension with various output types
-//
-// MD_MAX72XX library can be found at https://github.com/MajicDesigns/MD_MAX72XX
-//
-
 #include <MD_Parola.h>
 #include <MD_MAX72xx.h>
 #include <SPI.h>
 #include <HCSR04.h>
 
-
 const uint16_t WAIT_TIME = 300;
 
-// Define the number of devices we have in the chain and the hardware interface
-// NOTE: These pin numbers will probably not work with your hardware and may
-// need to be adapted
 #define HARDWARE_TYPE MD_MAX72XX::GENERIC_HW
 #define MAX_DEVICES 2
 
@@ -25,14 +19,14 @@ const uint16_t WAIT_TIME = 300;
 #define DATA_PIN  11
 #define CS_PIN    10
 
-int Test = 1;
-int Korrektur = -2;
+int Korrektur = -2; 
+// Da der Sensor hinter der Garagenwand angebracht ist wird hier die 
+// Wandstärke mit angegeben um sie von dem gemessenen Wert abzuziehen.
 
 byte triggerPin = 7;
 byte echoPin = 6;
 int entfernung = 0;
 
-// Hardware SPI connection
 MD_Parola P = MD_Parola(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
 // Arbitrary output pins
 // MD_Parola P = MD_Parola(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
@@ -56,7 +50,7 @@ double* distances = HCSR04.measureDistanceCm();
   
   delay(500);
 
-if (entfernung < 2 || entfernung > 199)
+if (entfernung < 2 || entfernung > 199) // Der Messwert wird nur im Bereich von 2 - 199cm angezeigt
 {
 P.print("---");
 }
@@ -66,21 +60,5 @@ P.print(entfernung);
 }
 
 delay(WAIT_TIME);
-
-//Test++;
-//  P.print(1234, HEX);
-//  delay(WAIT_TIME);
-//  P.print(12.5);      // float not supported by Arduino Print class
-//  delay(WAIT_TIME);
-//  P.print(9876l);
-//  delay(WAIT_TIME);
-//  P.println("end");   // only get the /r/n characters - avoid using println
-//  delay(WAIT_TIME);
-//  P.write('A');
-//  delay(WAIT_TIME);
-//  P.write('B');
-//  delay(WAIT_TIME);
-//  P.write('C');
-//  delay(WAIT_TIME);
 
 }
